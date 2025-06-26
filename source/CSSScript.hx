@@ -1,4 +1,5 @@
 import Reflect;
+import Type;
 
 class CSSScript {
 
@@ -48,9 +49,14 @@ class CSSScript {
     }
 
     public function reload() { // if you put this in update it WILL lag (prolly)
+        //if (Assets.exists(Paths.file('data/themes/' + cssPath + '.css'))) {
+        for (i in variables.keys()) {
+            variables.remove(i);
+        }
         cssScript = Assets.getText(Paths.file('data/themes/' + cssPath + '.css'));
         if (cssScript == null) return;
         parseScript();
+        //}
     }
 
     public function parseScript() {
@@ -166,11 +172,43 @@ class CSSScript {
     public function update() {
         for (key in variables.keys()) {
             var param = variables.get(key);
-            var obj = Reflect.field(FlxG.state, key);
-            if (obj != null) {
-                applyCssToObj(obj, param);
+            var keything = key.split("");
+            keything.shift();
+            if (StringTools.startsWith(key, ".")) {
+                var obj = Reflect.field(FlxG.state, keything.join(""));
+                if (obj != null) {
+                    applyCssToObj(obj, param);
+                }
             }
         }
+        for (key in variables.keys()) {
+            var param = variables.get(key);
+            var keything = key.split("");
+            keything.shift();
+            if (!StringTools.startsWith(key, ".")) {
+                for (i in FlxG.state.members) {
+                    if (key != "*" && (doTheThing(Type.typeof(i))+"").split(".").pop() == key) {
+                        applyCssToObj(i, param);
+                    }
+                }
+            }
+        }
+        for (key in variables.keys()) {
+            var param = variables.get(key);
+            var keything = key.split("");
+            keything.shift();
+            if (!StringTools.startsWith(key, ".")) {
+                for (i in FlxG.state.members) {
+                    if (key == "*") {
+                        applyCssToObj(i, param);
+                    }
+                }
+            }
+        }
+    }
+
+    public function doTheThing(string:String) {
+        return Type.resolveClass(StringTools.replace(StringTools.replace(string, "TClass(", ""), ")", ""));
     }
 
     public var getObj = variables.get;

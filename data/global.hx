@@ -18,7 +18,9 @@ function focusGained() {
 
 function preStateSwitch() {
     themes = [];
-    addTheme(new CSSScript(getStateName()));
+}
+function postStateSwitch() {
+    themes.push(new CSSScript(getStateName()));
 }
 
 static function addTheme(theme:CSSScript)
