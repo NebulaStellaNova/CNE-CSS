@@ -1,0 +1,22 @@
+bg {
+    color: #6eaaff;
+    src: "menus/menuDesat";
+    margin-top: 50;
+}
+
+magenta {
+    color: #fd719b;
+    src: "menus/menuDesat";
+    margin-top: 50;
+}
+
+menuItems {
+    align-items: left;
+    margin-left: 40px;
+}
+
+versionText {
+    margin-right: 10;
+    max-width: screenWidth;
+    align-self: right;
+}
