@@ -144,6 +144,10 @@ class CSSScript {
             obj.color = param.get("color") ?? obj.color;
         }
 
+        if (obj.alpha != null) {
+            obj.alpha = param.get('opacity') ?? 1.0;
+        }
+
         if (obj.fieldWidth != null) {
             obj.fieldWidth = param.get("max-width") ?? obj.fieldWidth;
         }
